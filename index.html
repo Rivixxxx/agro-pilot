@@ -225,43 +225,242 @@
             </div>
         </section>
 
-        <!-- Cases and Blog Section -->
-        <section id="cases-blog" class="py-12 md:py-20 bg-white/40 backdrop-blur rounded-2xl shadow-xl my-8 mx-2 md:mx-0">
-            <div class="container max-w-screen-xl mx-auto px-4 md:px-6" data-aos="fade-up">
-                <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Кейсы и статьи</h2>
-                <div class="relative flex flex-wrap justify-center items-center gap-4 md:gap-8">
-                    <!-- 6 крупных ромбов -->
-                    <div class="diamond large" onclick="openCaseModal(0)">
-                        <img src="assets/modal_1.jpeg" alt="Кейс 1" />
-                        <div class="diamond-label">Кейс: Ночная работа с AT2</div>
+        <!-- Cases and Blog Section (новый стиль из case.html) -->
+        <section id="cases-blog" style="position:relative;z-index:1;min-height:100vh;overflow:hidden;padding:0;">
+            <!-- Параллакс фон -->
+            <!-- <div class="parallax-bg"></div>
+            <div class="tech-pattern"></div> -->
+            <div class="cases-container">
+                <!-- Плавающие декоративные элементы -->
+                <div class="floating-shapes">
+                    <div class="shape w-16 h-16 bg-white rounded-full"></div>
+                    <div class="shape w-12 h-12 bg-blue-300 rounded-full"></div>
+                    <div class="shape w-20 h-20 bg-purple-300 rounded-full"></div>
+                    <div class="shape w-14 h-14 bg-indigo-300 rounded-full"></div>
+                </div>
+                <!-- Заголовок -->
+                <h2 class="main-title">
+                    <i class="fas fa-diamond mr-4"></i>
+                    Кейсы и статьи
+                    <i class="fas fa-diamond ml-4"></i>
+                </h2>
+                <!-- Сетка ромбов -->
+                <div class="diamonds-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 900px; margin: 0 auto; padding: 40px 0;">
+                    <!-- Ромб 1 -->
+                    <div class="diamond pulse-animation" onclick="openModal(0)">
+                        <img src="assets/modal_1.jpeg" alt="Кейс 1" class="diamond-image">
+                        <div class="diamond-label"><i class="fas fa-moon mr-2"></i>Кейс: Ночная работа с AT2</div>
                     </div>
-                    <div class="diamond large" onclick="openCaseModal(1)">
-                        <img src="assets/case-k700.png" alt="Статья 1" />
-                        <div class="diamond-label">Кейс: К-700 с AT2 Lite</div>
+                    <!-- Ромб 2 -->
+                    <div class="diamond" onclick="openModal(1)">
+                        <img src="assets/case-k700.png" alt="Кейс 2" class="diamond-image">
+                        <div class="diamond-label"><i class="fas fa-tractor mr-2"></i>Кейс: К-700 с AT2 Lite</div>
                     </div>
-                    <div class="diamond large" onclick="openCaseModal(2)">
-                        <img src="assets/case2.jpg" alt="Кейс 2" class="object-cover w-full h-full" />
-                        <div class="diamond-label">Кейс: СПК «Заря»</div>
+                    <!-- Ромб 3 -->
+                    <div class="diamond" onclick="openModal(2)">
+                        <img src="assets/case2.jpg" alt="Кейс 3" class="diamond-image">
+                        <div class="diamond-label"><i class="fas fa-seedling mr-2"></i>Кейс: СПК «Заря»</div>
                     </div>
-                    <div class="diamond large" onclick="openCaseModal(3)">
-                        <img src="assets/article2.jpg" alt="Статья 2" class="object-cover w-full h-full" />
-                        <div class="diamond-label">Статья: RTK или PPP?</div>
+                    <!-- Ромб 4 -->
+                    <div class="diamond" onclick="openModal(3)">
+                        <img src="assets/article2.jpg" alt="Статья 1" class="diamond-image">
+                        <div class="diamond-label"><i class="fas fa-satellite mr-2"></i>Статья: RTK или PPP?</div>
                     </div>
-                    <div class="diamond large" onclick="openCaseModal(4)">
-                        <img src="assets/case3.jpg" alt="Кейс 3" class="object-cover w-full h-full" />
-                        <div class="diamond-label">Кейс: Фермер Иванов</div>
+                    <!-- Ромб 5 -->
+                    <div class="diamond" onclick="openModal(4)">
+                        <img src="assets/case3.jpg" alt="Кейс 4" class="diamond-image">
+                        <div class="diamond-label"><i class="fas fa-user-tie mr-2"></i>Кейс: Фермер Иванов</div>
                     </div>
-                    <div class="diamond large" onclick="openCaseModal(5)">
-                        <img src="assets/article3.jpg" alt="Статья 3" class="object-cover w-full h-full" />
-                        <div class="diamond-label">Статья: Экономия топлива</div>
+                    <!-- Ромб 6 -->
+                    <div class="diamond" onclick="openModal(5)">
+                        <img src="assets/article3.jpg" alt="Статья 2" class="diamond-image">
+                        <div class="diamond-label"><i class="fas fa-gas-pump mr-2"></i>Статья: Экономия топлива</div>
                     </div>
-                    <!-- Маленькие ромбики (частично видны) -->
-                    <div class="diamond small" style="left:-30px;top:60px;" onclick="openCaseModal(6)"></div>
-                    <div class="diamond small" style="right:-30px;top:120px;" onclick="openCaseModal(7)"></div>
-                    <div class="diamond small" style="left:40px;bottom:-30px;" onclick="openCaseModal(8)"></div>
-                    <div class="diamond small" style="right:40px;bottom:-30px;" onclick="openCaseModal(9)"></div>
                 </div>
             </div>
+            <!-- Модальное окно -->
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <button class="modal-close" onclick="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <img id="modal-image" class="modal-image" src="" alt="">
+                    <h3 id="modal-title" class="modal-title"></h3>
+                    <p id="modal-date" class="modal-date"></p>
+                    <div id="modal-text" class="modal-text"></div>
+                </div>
+            </div>
+            <style>
+            /* --- Стили из case.html --- */
+            .parallax-bg {
+                position: fixed;top: 0;left: 0;width: 120%;height: 120%;background: linear-gradient(45deg,rgba(103,126,234,0.8) 0%,rgba(118,75,162,0.8) 25%,rgba(64,156,255,0.8) 50%,rgba(155,81,224,0.8) 75%,rgba(103,126,234,0.8) 100%);background-size: 400% 400%;animation: gradientShift 15s ease infinite;z-index: -2;transform: translate(-50px, -50px);}
+            .tech-pattern {
+                position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-image:radial-gradient(circle at 20% 50%, rgba(120, 220, 255, 0.1) 0%, transparent 50%),radial-gradient(circle at 80% 20%, rgba(255, 120, 220, 0.1) 0%, transparent 50%),radial-gradient(circle at 40% 80%, rgba(120, 255, 120, 0.1) 0%, transparent 50%),linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%),linear-gradient(rgba(255, 255, 255, 0.02) 50%, transparent 50%);background-size: 800px 600px, 600px 800px, 700px 500px, 100px 100px, 60px 60px;animation: techMove 20s linear infinite;z-index: -1;}
+            @keyframes gradientShift {0% { background-position: 0% 50%; }50% { background-position: 100% 50%; }100% { background-position: 0% 50%; }}
+            @keyframes techMove {0% { transform: translateX(0) translateY(0); }100% { transform: translateX(-100px) translateY(-50px); }}
+            .cases-container {position: relative;z-index: 1;padding: 80px 20px;min-height: 100vh;}
+            .main-title {text-align: center;font-size: 3.5rem;font-weight: 800;color: white;text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);margin-bottom: 60px;animation: titleFloat 3s ease-in-out infinite;}
+            @keyframes titleFloat {0%, 100% { transform: translateY(0px); }50% { transform: translateY(-10px); }}
+            .diamonds-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));gap: 40px;max-width: 1400px;margin: 0 auto;padding: 40px 0;}
+            .diamond {position: relative;width: 200px;height: 200px;margin: 0 auto;transform: rotate(45deg);background: rgba(255, 255, 255, 0.1);backdrop-filter: blur(10px);border: 2px solid rgba(255, 255, 255, 0.2);border-radius: 20px;overflow: hidden;cursor: pointer;transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);animation: diamondFloat 6s ease-in-out infinite;box-shadow:0 8px 32px rgba(0, 0, 0, 0.3),inset 0 1px 0 rgba(255, 255, 255, 0.2);}
+            .diamond:nth-child(1) { animation-delay: 0s; }
+            .diamond:nth-child(2) { animation-delay: -1s; }
+            .diamond:nth-child(3) { animation-delay: -2s; }
+            .diamond:nth-child(4) { animation-delay: -3s; }
+            .diamond:nth-child(5) { animation-delay: -4s; }
+            .diamond:nth-child(6) { animation-delay: -5s; }
+            @keyframes diamondFloat {0%, 100% { transform: rotate(45deg) translateY(0px);box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);}50% { transform: rotate(45deg) translateY(-15px);box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);}}
+            .diamond:hover {transform: rotate(45deg) translateY(-20px) scale(1.1);box-shadow:0 25px 50px rgba(0, 0, 0, 0.4),0 0 50px rgba(103, 126, 234, 0.5),inset 0 1px 0 rgba(255, 255, 255, 0.3);border-color: rgba(255, 255, 255, 0.4);}
+            .diamond-image {position: absolute;top: 50%;left: 50%;width: 140%;height: 140%;object-fit: cover;transform: translate(-50%, -50%) rotate(-45deg);transition: all 0.4s ease;filter: brightness(0.8) contrast(1.1);}
+            .diamond:hover .diamond-image {transform: translate(-50%, -50%) rotate(-45deg) scale(1.1);filter: brightness(1) contrast(1.2);}
+            .diamond-label {position: absolute;bottom: 15px;left: 15px;right: 15px;background: rgba(0, 0, 0, 0.8);backdrop-filter: blur(10px);color: white;padding: 8px 12px;border-radius: 8px;font-size: 0.85rem;font-weight: 600;text-align: center;transform: rotate(-45deg);transition: all 0.3s ease;border: 1px solid rgba(255, 255, 255, 0.2);}
+            .diamond:hover .diamond-label {background: rgba(103, 126, 234, 0.9);transform: rotate(-45deg) scale(1.05);box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);}
+            .floating-shapes {position: absolute;top: 0;left: 0;width: 100%;height: 100%;pointer-events: none;overflow: hidden;}
+            .shape {position: absolute;opacity: 0.1;animation: shapeFloat 15s linear infinite;}
+            .shape:nth-child(1) {top: 10%;left: 10%;animation-delay: 0s;}
+            .shape:nth-child(2) {top: 20%;right: 15%;animation-delay: -5s;}
+            .shape:nth-child(3) {bottom: 20%;left: 20%;animation-delay: -10s;}
+            .shape:nth-child(4) {bottom: 10%;right: 10%;animation-delay: -7s;}
+            @keyframes shapeFloat {0% { transform: translateY(0px) rotate(0deg); }25% { transform: translateY(-20px) rotate(90deg); }50% { transform: translateY(-40px) rotate(180deg); }75% { transform: translateY(-20px) rotate(270deg); }100% { transform: translateY(0px) rotate(360deg); }}
+            .modal {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);backdrop-filter: blur(10px);display: none;justify-content: center;align-items: center;z-index: 1000;animation: modalFadeIn 0.3s ease;}
+            .modal.show {display: flex;}
+            @keyframes modalFadeIn {from { opacity: 0; }to { opacity: 1; }}
+            .modal-content {background: white;border-radius: 20px;padding: 30px;max-width: 600px;width: 90%;max-height: 80vh;overflow-y: auto;position: relative;box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+            @keyframes modalSlideIn {from { transform: translateY(50px) scale(0.9); opacity: 0; }to { transform: translateY(0) scale(1); opacity: 1; }}
+            .modal-close {position: absolute;top: 15px;right: 20px;background: none;border: none;font-size: 24px;cursor: pointer;color: #666;transition: color 0.3s ease;}
+            .modal-close:hover {color: #333;}
+            .modal-image {width: 100%;height: 200px;object-fit: cover;border-radius: 12px;margin-bottom: 20px;}
+            .modal-title {font-size: 1.8rem;font-weight: 700;margin-bottom: 10px;color: #333;}
+            .modal-date {color: #666;font-size: 0.9rem;margin-bottom: 20px;}
+            .modal-text {line-height: 1.6;color: #555;}
+            @media (max-width: 768px) {.main-title {font-size: 2.5rem;margin-bottom: 40px;}.diamonds-grid {grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));gap: 30px;}.diamond {width: 160px;height: 160px;}.cases-container {padding: 60px 15px;}}
+            @media (max-width: 480px) {.main-title {font-size: 2rem;}.diamonds-grid {grid-template-columns: repeat(2, 1fr);gap: 20px;}.diamond {width: 140px;height: 140px;}}
+            .pulse-animation {animation: pulse 2s infinite;}
+            @keyframes pulse {0% { box-shadow: 0 0 0 0 rgba(103, 126, 234, 0.4); }70% { box-shadow: 0 0 0 20px rgba(103, 126, 234, 0); }100% { box-shadow: 0 0 0 0 rgba(103, 126, 234, 0); }}
+            @media print {.cases-container {min-height: auto;padding: 40px 20px;}.parallax-bg, .tech-pattern {position: absolute;}.diamond {animation: none;transform: rotate(45deg);margin-bottom: 20px;}.modal {display: none !important;}}
+            </style>
+            <script>
+            // Данные для модальных окон
+            const casesData = [
+                {
+                    title: 'Кейс: Ночная работа с AT2',
+                    date: '20 июня 2024',
+                    image: 'assets/modal_1.jpeg',
+                    content: `<p><strong>🌙 Фермер Иван работает ночью с автопилотом NAVMOPO AT2</strong></p><p>Эффективное опрыскивание даже в темное время суток! Система обеспечивает точную навигацию при любых условиях освещения.</p><blockquote style="border-left: 4px solid #667eea; padding-left: 15px; margin: 20px 0; font-style: italic;">«Работаем в любое время — задача решается! Теперь можем использовать прохладные ночные часы для обработки полей.»</blockquote><p><strong>Преимущества ночной работы:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>Меньшее испарение препаратов</li><li>Отсутствие ветра</li><li>Высокая точность навигации</li><li>Экономия времени в дневные часы</li></ul>`
+                },
+                {
+                    title: 'Кейс: К-700 с AT2 Lite',
+                    date: '15 мая 2024',
+                    image: 'assets/case-k700.png',
+                    content: `<p><strong>🚜 Модернизация легендарного К-700</strong></p><p>Установка системы автопилотирования NAVMOPO AT2 Lite на классический трактор К-700 показала отличные результаты.</p><p><strong>Результаты внедрения:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>Повышение точности вождения на 95%</li><li>Экономия топлива до 15%</li><li>Снижение усталости оператора</li><li>Увеличение площади обработки за смену</li></ul><blockquote style="border-left: 4px solid #667eea; padding-left: 15px; margin: 20px 0; font-style: italic;">«Старый конь борозды не портит, а с автопилотом — вообще идеально работает!»</blockquote>`
+                },
+                {
+                    title: 'Кейс: СПК «Заря»',
+                    date: '3 апреля 2024',
+                    image: 'assets/case2.jpg',
+                    content: `<p><strong>🌾 Крупное хозяйство переходит на точное земледелие</strong></p><p>СПК «Заря» внедрило систему NAVMOPO AT2 на всем парке техники. Результаты превзошли ожидания.</p><p><strong>Масштаб проекта:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>12 единиц техники</li><li>5,000 га обрабатываемых земель</li><li>Полный цикл: посев, обработка, уборка</li></ul><p><strong>Экономический эффект:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>Экономия семян: 8%</li><li>Экономия удобрений: 12%</li><li>Увеличение урожайности: 7%</li><li>ROI: окупаемость за 1.5 сезона</li></ul>`
+                },
+                {
+                    title: 'Статья: RTK или PPP?',
+                    date: '28 марта 2024',
+                    image: 'assets/article2.jpg',
+                    content: `<p><strong>📡 Выбор технологии позиционирования для точного земледелия</strong></p><p>Подробное сравнение технологий RTK и PPP для систем автопилотирования сельхозтехники.</p><h4 style="color: #667eea; margin: 20px 0 10px 0;">RTK (Real Time Kinematic)</h4><p><strong>Преимущества:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>Точность до 2 см</li><li>Мгновенная инициализация</li><li>Стабильная работа</li></ul><p><strong>Недостатки:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>Требуется базовая станция</li><li>Ограниченный радиус действия</li><li>Дополнительные расходы</li></ul><h4 style="color: #667eea; margin: 20px 0 10px 0;">PPP (Precise Point Positioning)</h4><p><strong>Преимущества:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>Бесплатные коррекции</li><li>Глобальное покрытие</li><li>Не требует инфраструктуры</li></ul><p><strong>Недостатки:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>Время сходимости 10-15 минут</li><li>Точность 10-20 см</li><li>Зависимость от спутникового сигнала</li></ul>`
+                },
+                {
+                    title: 'Кейс: Фермер Иванов',
+                    date: '12 февраля 2024',
+                    image: 'assets/case3.jpg',
+                    content: `<p><strong>👨‍🌾 История успеха частного фермера</strong></p><p>Алексей Иванов, фермер из Тамбовской области, рассказывает о своем опыте использования NAVMOPO AT2.</p><blockquote style="border-left: 4px solid #667eea; padding-left: 15px; margin: 20px 0; font-style: italic;">«Когда купил автопилот, думал — игрушка дорогая. Теперь понимаю — это инвестиция в будущее. За сезон система окупилась полностью.»</blockquote><p><strong>Хозяйство Иванова:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>Площадь: 800 га</li><li>Основные культуры: пшеница, подсолнечник</li><li>Техника: Беларус-3022, John Deere 9600</li></ul><p><strong>Результаты за сезон:</strong></p><ul style="margin: 15px 0; padding-left: 20px;"><li>Экономия топлива: 180,000 рублей</li><li>Экономия семян: 95,000 рублей</li><li>Увеличение урожайности: +3 ц/га</li><li>Общая экономия: 520,000 рублей</li></ul>`
+                },
+                {
+                    title: 'Статья: Экономия топлива',
+                    date: '5 января 2024',
+                    image: 'assets/article3.jpg',
+                    content: `<p><strong>⛽ Как автопилот помогает экономить топливо</strong></p><p>Детальный анализ экономии топлива при использовании систем автоматического вождения в сельском хозяйстве.</p><h4 style="color: #667eea; margin: 20px 0 10px 0;">Основные факторы экономии:</h4><ul style="margin: 15px 0; padding-left: 20px;"><li><strong>Оптимальная скорость:</strong> поддержание постоянной оптимальной скорости</li><li><strong>Прямолинейность:</strong> исключение змейки и отклонений</li><li><strong>Точные развороты:</strong> минимизация холостых проходов</li><li><strong>Оптимальные маршруты:</strong> планирование эффективных траекторий</li></ul><h4 style="color: #667eea; margin: 20px 0 10px 0;">Статистика экономии:</h4><ul style="margin: 15px 0; padding-left: 20px;"><li>Вспашка: 10-15% экономии</li><li>Посев: 8-12% экономии</li><li>Опрыскивание: 15-20% экономии</li><li>Культивация: 7-10% экономии</li></ul><blockquote style="border-left: 4px solid #667eea; padding-left: 15px; margin: 20px 0; font-style: italic;">«В среднем, автопилот экономит 12-15% топлива. При стоимости дизеля 55 руб/л и расходе 1000 л/га за сезон, экономия составляет 6,600 рублей с гектара.»</blockquote>`
+                }
+            ];
+            // Функция открытия модального окна
+            function openModal(index) {
+                const modal = document.getElementById('modal');
+                const data = casesData[index];
+                document.getElementById('modal-image').src = data.image;
+                document.getElementById('modal-title').textContent = data.title;
+                document.getElementById('modal-date').textContent = data.date;
+                document.getElementById('modal-text').innerHTML = data.content;
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+            // Функция закрытия модального окна
+            function closeModal() {
+                const modal = document.getElementById('modal');
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+            // Закрытие модального окна при клике вне его
+            document.getElementById('modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+            // Закрытие модального окна по клавише Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+            // Параллакс эффект при скролле
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const bg = document.querySelector('.parallax-bg');
+                const tech = document.querySelector('.tech-pattern');
+                if (bg) {
+                    bg.style.transform = `translate(-50px, -50px) translateY(${scrolled * 0.5}px)`;
+                }
+                if (tech) {
+                    tech.style.transform = `translateX(-100px) translateY(-50px) translateY(${scrolled * 0.3}px)`;
+                }
+            });
+            // Анимация появления элементов при скролле
+            const observerOptions = {threshold: 0.1,rootMargin: '0px 0px -50px 0px'};
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'rotate(45deg) translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            document.addEventListener('DOMContentLoaded', function() {
+                const diamonds = document.querySelectorAll('.diamond');
+                diamonds.forEach((diamond, index) => {
+                    diamond.style.opacity = '0';
+                    diamond.style.transform = 'rotate(45deg) translateY(50px)';
+                    diamond.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                    observer.observe(diamond);
+                });
+            });
+            // Добавление hover эффектов для мобильных устройств
+            if ('ontouchstart' in window) {
+                const diamonds = document.querySelectorAll('.diamond');
+                diamonds.forEach(diamond => {
+                    diamond.addEventListener('touchstart', function() {
+                        this.classList.add('touch-active');
+                    });
+                    diamond.addEventListener('touchend', function() {
+                        setTimeout(() => {
+                            this.classList.remove('touch-active');
+                        }, 300);
+                    });
+                });
+            }
+            // Оптимизация для печати
+            window.addEventListener('beforeprint', function() {
+                document.body.classList.add('printing');
+            });
+            window.addEventListener('afterprint', function() {
+                document.body.classList.remove('printing');
+            });
+            </script>
         </section>
 
         <!-- Contact Form Section -->
@@ -350,19 +549,6 @@
             </div>
             
             <button id="modal-ask-question-button" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition">Задать вопрос по этой модели</button>
-        </div>
-    </div>
-
-    <!-- Case Modal -->
-    <div id="case-modal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-xl shadow-2xl p-6 max-w-2xl w-full relative">
-            <button onclick="closeCaseModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <img id="case-modal-img" src="" alt="" class="w-full h-64 object-cover rounded-lg mb-4">
-            <h3 id="case-modal-title" class="text-2xl font-bold mb-2"></h3>
-            <p id="case-modal-date" class="text-gray-400 text-sm mb-4"></p>
-            <div id="case-modal-content" class="text-gray-700"></div>
         </div>
     </div>
 
@@ -547,112 +733,6 @@
             document.getElementById('model-modal').classList.add('hidden');
             setTimeout(() => scrollToSection('contact'), 200);
         };
-
-        const cases = [
-                { 
-                    type: 'case', 
-                    title: 'Кейс: Ночная работа с AT2', 
-                    date: '2024-06-20', 
-                    img: 'assets/modal_1.jpeg', 
-                    content: '🌙 Фермер Иван работает ночью с автопилотом <a href="https://www.navmopo.com/navmopo-at2-steer-system" target="_blank">NAVMOPO AT2</a> — эффективное опрыскивание даже в темное время суток!<br><i>«Работаем в любое время — задача решается!»</i>' 
-                },
-                { 
-                    type: 'case', 
-                    title: 'Кейс: К-700 с AT2 Lite', 
-                    date: '2024-06-18', 
-                    img: 'assets/case-k700.png', 
-                    content: 'На трактор К-700 установлен <a href="https://www.navmopo.com/at2-lite" target="_blank">NAVMOPO AT2 Lite</a>.<br>Система работает в любых режимах, подходит для шарнирно-сочленённых тракторов, быстро настраивается и повышает точность обработки!' 
-                },
-                { 
-                    type: 'case', 
-                    title: 'Кейс: John Deere и система AS2', 
-                    date: '2024-06-16', 
-                    img: 'assets/case-jd.jpg', 
-                    content: 'Установлена <a href="https://www.navmopo.com/navmopo-as2" target="_blank">NAVMOPO AS2</a> на John Deere без переделок.<br>Сохранили рулевое колесо, подключение по CAN — максимум комфорта и контроля!' 
-                },
-                { 
-                    type: 'case', 
-                    title: 'Кейс: МТЗ + AT2 Lite', 
-                    date: '2024-06-14', 
-                    img: 'assets/case-mtz.jpg', 
-                    content: 'Трактор МТЗ с автопилотом <a href="https://www.navmopo.com/at2-lite" target="_blank">AT2 Lite</a>:<br>Wi-Fi, ISOBUS, простая установка и экономия до 30% инвестиций!' 
-                },
-                { 
-                    type: 'case', 
-                    title: 'Кейс: LOVOL 904 и NAVMOPO', 
-                    date: '2024-06-10', 
-                    img: 'assets/case-lovol.jpg', 
-                    content: 'С дилером <a href="https://bizonagro.ru/ru/?ysclid=m7nbudqm1f733539352" target="_blank">Бизон</a> внедрили <a href="https://www.navmopo.com/navmopo-at2-steer-system" target="_blank">AT2</a> на LOVOL 904.<br>Теперь — больше точности, меньше затрат!' 
-                },
-                { 
-                    type: 'case', 
-                    title: 'Кейс: Гусеничный трактор с AT2', 
-                    date: '2024-06-08', 
-                    img: 'assets/case-track.jpg', 
-                    content: 'NAVMOPO AT2 идеально подходит для гусеничных тракторов: точная навигация, равномерная обработка, экономия времени и сил.' 
-                },
-                { 
-                    type: 'case', 
-                    title: 'Кейс: CLAAS Atles — теперь послушный!', 
-                    date: '2024-06-06', 
-                    img: 'assets/case-claas.jpg', 
-                    content: '🔥 Трактор CLAAS Atles с автопилотом <a href="https://www.navmopo.com/navmopo-at2-steer-system" target="_blank">AT2</a> стал «паинькой»!<br>Больше безопасности и точности — меньше утомления!' 
-                },
-                // Оригинальные записи остаются:
-                { 
-                    type: 'case', 
-                    title: 'Кейс: ООО «АгроПлюс»', 
-                    date: '2024-06-01', 
-                    img: 'assets/modal_1.jpeg', 
-                    content: 'Задача: автоматизация посева на К-700. Результат: +12% к производительности, экономия топлива 8%.<br><i>«Система работает стабильно, поддержка отличная!»</i>' 
-                },
-                { 
-                    type: 'article', 
-                    title: 'Как выбрать автопилот для трактора?', 
-                    date: '2024-05-20', 
-                    img: 'assets/article1.jpg', 
-                    content: 'Пошаговая инструкция для аграриев: на что обратить внимание при выборе системы автоматического вождения...' 
-                },
-                { 
-                    type: 'case', 
-                    title: 'Кейс: СПК «Заря»', 
-                    date: '2024-05-10', 
-                    img: 'assets/case2.jpg', 
-                    content: 'Внедрение NAVMOPO AT2 на МТЗ-1221. Снижение перекрытий на 15%, повышение точности обработки.' 
-                },
-                { 
-                    type: 'article', 
-                    title: 'RTK или PPP?', 
-                    date: '2024-04-28', 
-                    img: 'assets/article2.jpg', 
-                    content: 'Сравнение технологий RTK и PPP для сельского хозяйства. Плюсы и минусы, практические советы.' 
-                },
-                { 
-                    type: 'case', 
-                    title: 'Кейс: Фермер Иванов', 
-                    date: '2024-04-15', 
-                    img: 'assets/case3.jpg', 
-                    content: 'Автоматизация культивации. Сокращение времени на обработку поля на 20%.' 
-                },
-                { 
-                    type: 'article', 
-                    title: 'Экономия топлива', 
-                    date: '2024-04-01', 
-                    img: 'assets/article3.jpg', 
-                    content: 'Как современные автопилоты помогают экономить топливо и ресурсы хозяйства.' 
-                },
-                    ];
-            function openCaseModal(idx) {
-                const c = cases[idx] || cases[0];
-                document.getElementById('case-modal-img').src = c.img;
-                document.getElementById('case-modal-title').textContent = c.title;
-                document.getElementById('case-modal-date').textContent = c.date;
-                document.getElementById('case-modal-content').innerHTML = c.content;
-                document.getElementById('case-modal').classList.remove('hidden');
-            }
-            function closeCaseModal() {
-                document.getElementById('case-modal').classList.add('hidden');
-            }
     </script>
 </body>
 </html> 
