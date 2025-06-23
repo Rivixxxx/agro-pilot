@@ -16,18 +16,79 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <link rel="canonical" href="https://ВАШ_САЙТ.ru/">
+    <meta name="robots" content="index, follow">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ООО Навикон",
+      "url": "https://ВАШ_САЙТ.ru/",
+      "logo": "https://ВАШ_САЙТ.ru/assets/logo.svg",
+      "contactPoint": [{
+        "@type": "ContactPoint",
+        "telephone": "+7-4752-559400",
+        "contactType": "customer service",
+        "areaServed": "RU",
+        "availableLanguage": ["Russian"]
+      }],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "б-р Строителей, 3Г",
+        "addressLocality": "Тамбов",
+        "postalCode": "392000",
+        "addressCountry": "RU"
+      }
+    }
+    </script>
     <style type="text/tailwindcss">
         html {
             scroll-behavior: smooth;
         }
         body {
             overflow-x: hidden;
-            background-color: #f0f4f8; /* Светло-голубой фон, как у Навикон */
+            background-color: #f0f4f8;
         }
         .swiper-button-next, .swiper-button-prev {
             color: #fff;
         }
-         @keyframes marquee {
+        /* Вендорные префиксы и @supports для backdrop-filter и других */
+        .modal, .modal.show, .parallax-bg, .tech-pattern, .cases-container, .diamond {
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        @supports not ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+            .modal, .modal.show, .parallax-bg, .tech-pattern, .cases-container, .diamond {
+                background-color: rgba(255,255,255,0.95) !important;
+            }
+        }
+        .diamond, .modal-content, .cases-container {
+            -webkit-box-shadow: 0 4px 24px 0 rgb(0 0 0 / 0.10);
+            box-shadow: 0 4px 24px 0 rgb(0 0 0 / 0.10);
+        }
+        .diamond, .modal-content, .cases-container, .main-title, .modal-close, .diamond-label {
+            -webkit-transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .diamond, .modal-content, .cases-container, .main-title, .modal-close, .diamond-label {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        /* Fallback для object-fit: cover для IE11 */
+        .diamond img {
+            background-size: cover !important;
+            background-position: center !important;
+        }
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            .diamond img {
+                object-fit: unset !important;
+                width: auto !important;
+                height: auto !important;
+            }
+        }
+        @keyframes marquee {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
         }
@@ -41,18 +102,26 @@
              @apply bg-blue-600 text-white py-2 px-5 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md hover:shadow-lg;
         }
         .diamond {
-            width: 140px; height: 140px; background: #e5e7eb; position: relative;
-            transform: rotate(45deg); overflow: hidden; cursor: pointer;
-            transition: box-shadow 0.3s, transform 0.3s; box-shadow: 0 4px 24px 0 rgb(0 0 0 / 0.10);
+            position: relative;
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            transform: rotate(45deg);
+            cursor: pointer;
+            transition: box-shadow 0.3s, transform 0.3s;
+            box-shadow: 0 4px 24px 0 rgb(0 0 0 / 0.10);
         }
-        .diamond.large { width: 180px; height: 180px; z-index: 2; }
-        .diamond.small { width: 80px; height: 80px; opacity: 0.5; position: absolute; z-index: 1; }
         .diamond img {
-          position: absolute;
-          top: 0; left: 0; width: 100%; height: 100%;
-          object-fit: cover;
-          transform: scale(2) rotate(-45deg);
-          z-index: 1;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transform: rotate(-45deg) scale(1.42);
+            z-index: 1;
+            transition: transform 0.4s;
+        }
+        .diamond:hover img {
+            transform: rotate(-45deg) scale(1.45);
         }
         .diamond-label {
             position: absolute; left: 0; right: 0; bottom: 10px;
@@ -61,10 +130,155 @@
             transform: rotate(-45deg);
             z-index: 2;
         }
-        .diamond:hover { box-shadow: 0 8px 32px 0 rgb(59 130 246 / 0.25); transform: scale(1.07) rotate(45deg);}
+        .header-hide {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1);
+        }
+        header {
+            transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1);
+        }
+        .modal, .modal.show {
+            position: fixed !important;
+            z-index: 2147483647 !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+        .modal.show { display: flex; }
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes modalSlideIn { from { transform: translateY(50px) scale(0.9); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+        .modal-close { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666; transition: color 0.3s ease; }
+        .modal-close:hover { color: #333; }
+        .modal-image { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; }
+        .modal-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; color: #333; }
+        .modal-date { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+        .modal-text { line-height: 1.6; color: #555; }
+        #preloader {
+            position: fixed;
+            z-index: 999999;
+            inset: 0;
+            background: #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s;
+        }
+        #preloader.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .preloader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #e0e7ef;
+            border-top: 6px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes gradientShift {0% { background-position: 0% 50%; }50% { background-position: 100% 50%; }100% { background-position: 0% 50%; }}
+        @keyframes techMove {0% { transform: translateX(0) translateY(0); }100% { transform: translateX(-100px) translateY(-50px); }}
+        .cases-container {position: relative;z-index: 1;padding: 80px 20px;min-height: 100vh;}
+        .main-title {text-align: center;font-size: 3.5rem;font-weight: 800;color: white;text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);margin-bottom: 60px;animation: titleFloat 3s ease-in-out infinite;}
+        @keyframes titleFloat {0%, 100% { transform: translateY(0px); }50% { transform: translateY(-10px); }}
+        .diamonds-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));gap: 40px;max-width: 1400px;margin: 0 auto;padding: 40px 0;}
+        .diamond {position: relative;width: 200px;height: 200px;margin: 0 auto;transform: rotate(45deg);background: rgba(255, 255, 255, 0.1);backdrop-filter: blur(10px);border: 2px solid rgba(255, 255, 255, 0.2);border-radius: 20px;overflow: hidden;cursor: pointer;transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);animation: diamondFloat 6s ease-in-out infinite;box-shadow:0 8px 32px rgba(0, 0, 0, 0.3),inset 0 1px 0 rgba(255, 255, 255, 0.2);}
+        .diamond:nth-child(1) { animation-delay: 0s; }
+        .diamond:nth-child(2) { animation-delay: -1s; }
+        .diamond:nth-child(3) { animation-delay: -2s; }
+        .diamond:nth-child(4) { animation-delay: -3s; }
+        .diamond:nth-child(5) { animation-delay: -4s; }
+        .diamond:nth-child(6) { animation-delay: -5s; }
+        @keyframes diamondFloat {0%, 100% { transform: rotate(45deg) translateY(0px);box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);}50% { transform: rotate(45deg) translateY(-15px);box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);}}
+        .diamond:hover {transform: rotate(45deg) translateY(-20px) scale(1.1);box-shadow:0 25px 50px rgba(0, 0, 0, 0.4),0 0 50px rgba(103, 126, 234, 0.5),inset 0 1px 0 rgba(255, 255, 255, 0.3);border-color: rgba(255, 255, 255, 0.4);}
+        .floating-shapes {position: absolute;top: 0;left: 0;width: 100%;height: 100%;pointer-events: none;overflow: hidden;}
+        .shape {position: absolute;opacity: 0.1;animation: shapeFloat 15s linear infinite;}
+        .shape:nth-child(1) {top: 10%;left: 10%;animation-delay: 0s;}
+        .shape:nth-child(2) {top: 20%;right: 15%;animation-delay: -5s;}
+        .shape:nth-child(3) {bottom: 20%;left: 20%;animation-delay: -10s;}
+        .shape:nth-child(4) {bottom: 10%;right: 10%;animation-delay: -7s;}
+        @keyframes shapeFloat {0% { transform: translateY(0px) rotate(0deg); }25% { transform: translateY(-20px) rotate(90deg); }50% { transform: translateY(-40px) rotate(180deg); }75% { transform: translateY(-20px) rotate(270deg); }100% { transform: translateY(0px) rotate(360deg); }}
+        .modal {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);backdrop-filter: blur(10px);display: none;justify-content: center;align-items: center;z-index: 9999;animation: modalFadeIn 0.3s ease;}
+        .modal.show {display: flex;}
+        @keyframes modalFadeIn {from { opacity: 0; }to { opacity: 1; }}
+        .modal-content {background: white;border-radius: 20px;padding: 30px;max-width: 600px;width: 90%;max-height: 80vh;overflow-y: auto;position: relative;box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+        @keyframes modalSlideIn {from { transform: translateY(50px) scale(0.9); opacity: 0; }to { transform: translateY(0) scale(1); opacity: 1; }}
+        .modal-close {position: absolute;top: 15px;right: 20px;background: none;border: none;font-size: 24px;cursor: pointer;color: #666;transition: color 0.3s ease;}
+        .modal-close:hover {color: #333;}
+        .modal-image {width: 100%;height: 200px;object-fit: cover;border-radius: 12px;margin-bottom: 20px;}
+        .modal-title {font-size: 1.8rem;font-weight: 700;margin-bottom: 10px;color: #333;}
+        .modal-date {color: #666;font-size: 0.9rem;margin-bottom: 20px;}
+        .modal-text {line-height: 1.6;color: #555;}
+        @media (max-width: 768px) {.main-title {font-size: 2.5rem;margin-bottom: 40px;}.diamonds-grid {grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));gap: 30px;}.diamond {width: 160px;height: 160px;}.cases-container {padding: 60px 15px;}}
+        @media (max-width: 480px) {.main-title {font-size: 2rem;}.diamonds-grid {grid-template-columns: repeat(2, 1fr);gap: 20px;}.diamond {width: 140px;height: 140px;}}
+        .pulse-animation {animation: pulse 2s infinite;}
+        @keyframes pulse {0% { box-shadow: 0 0 0 0 rgba(103, 126, 234, 0.4); }70% { box-shadow: 0 0 0 20px rgba(103, 126, 234, 0); }100% { box-shadow: 0 0 0 0 rgba(103, 126, 234, 0); }}
+        @media print {.cases-container {min-height: auto;padding: 40px 20px;}.parallax-bg, .tech-pattern {position: absolute;}.diamond {animation: none;transform: rotate(45deg);margin-bottom: 20px;}.modal {display: none !important;}}
+        html, body {
+          max-width: 100vw;
+          overflow-x: hidden !important;
+        }
+        .swiper-container, .swiper-wrapper {
+          width: 100vw !important;
+          max-width: 100vw !important;
+          margin-left: 0 !important;
+          left: 0 !important;
+          position: relative !important;
+        }
+        .swiper-pagination {
+          position: static !important;
+          margin-top: 1.5rem;
+          display: flex;
+          justify-content: center;
+        }
+        @media (max-width: 1024px) {
+          .diamonds-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 24px !important;
+            max-width: 600px !important;
+          }
+          .diamond { width: 140px !important; height: 140px !important; }
+        }
+        @media (max-width: 600px) {
+          .diamonds-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+            max-width: 320px !important;
+          }
+          .diamond { width: 120px !important; height: 120px !important; }
+        }
+        @media (max-width: 768px) {
+          .gallery-swiper { height: 12rem !important; }
+          .swiper-slide { height: 12rem !important; width: 12rem !important; }
+        }
     </style>
 </head>
 <body class="text-gray-800 overflow-x-hidden bg-fixed bg-center bg-cover" style="background-image: url('assets/back.jpg'); background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+    <div id="preloader">
+        <div class="preloader-spinner"></div>
+    </div>
 
     <!-- Header -->
     <header class="bg-white/90 backdrop-blur-md shadow-md fixed w-full z-30">
@@ -80,7 +294,7 @@
             </div>
             <hr/>
             <nav class="py-4 flex justify-between items-center flex-wrap gap-4">
-                <a href="#"><img src="assets/logo.svg" alt="Навикон Лого" class="h-10"></a>
+                <a href="#"><img src="assets/logo.svg" alt="Навикон Лого" class="h-10" loading="lazy" srcset="assets/logo.svg 1x, assets/logo.svg 2x" width="120" height="40"></a>
                 <div class="hidden md:flex space-x-4 lg:space-x-8 items-center font-medium">
                     <a href="#features" class="nav-link">Преимущества</a>
                     <a href="#gallery" class="nav-link">Как это работает</a>
@@ -157,36 +371,49 @@
 
         <!-- Gallery Section -->
         <section id="gallery" class="py-16 md:py-28 bg-white/40 backdrop-blur rounded-2xl shadow-xl my-8 mx-2 md:mx-0">
-            <div class="container max-w-screen-xl mx-auto px-4 md:px-6" data-aos="fade-up">
-                <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Компоненты системы и установка</h2>
-                <div class="swiper-container h-[22rem] sm:h-[28rem] md:h-[32rem] w-full rounded-xl shadow-2xl gallery-swiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide flex flex-col items-center justify-center bg-white h-[32rem] rounded-2xl shadow-lg">
-                            <img src="assets/i1.jpg" alt="Компонент 1" class="object-contain max-h-[24rem] max-w-full mx-auto my-0 p-6 rounded-2xl" />
-                            <div class="mt-2 text-center text-lg font-semibold text-gray-700">Универсальный терминал</div>
-                        </div>
-                        <div class="swiper-slide flex flex-col items-center justify-center bg-white h-[32rem] rounded-2xl shadow-lg">
-                            <img src="assets/i2.jpg" alt="Компонент 2" class="object-contain max-h-[24rem] max-w-full mx-auto my-0 p-6 rounded-2xl" />
-                            <div class="mt-2 text-center text-lg font-semibold text-gray-700">Возможность управления джойстиком ISO</div>
-                        </div>
-                        <div class="swiper-slide flex flex-col items-center justify-center bg-white h-[32rem] rounded-2xl shadow-lg">
-                            <img src="assets/i3.jpg" alt="Компонент 3" class="object-contain max-h-[24rem] max-w-full mx-auto my-0 p-6 rounded-2xl" />
-                            <div class="mt-2 text-center text-lg font-semibold text-gray-700">Контроллер задач</div>
-                        </div>
-                        <div class="swiper-slide flex flex-col items-center justify-center bg-white h-[32rem] rounded-2xl shadow-lg">
-                            <img src="assets/i4.jpg" alt="Компонент 4" class="object-contain max-h-[24rem] max-w-full mx-auto my-0 p-6 rounded-2xl" />
-                            <div class="mt-2 text-center text-lg font-semibold text-gray-700">Подпись для i4</div>
-                        </div>
-                        <div class="swiper-slide flex flex-col items-center justify-center bg-white h-[32rem] rounded-2xl shadow-lg">
-                            <img src="assets/i5.jpg" alt="Компонент 5" class="object-contain max-h-[24rem] max-w-full mx-auto my-0 p-6 rounded-2xl" />
-                            <div class="mt-2 text-center text-lg font-semibold text-gray-700">Подпись для i5</div>
-                        </div>
-                    </div>
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+          <div class="container max-w-screen-xl mx-auto px-4 md:px-6" data-aos="fade-up">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Компоненты системы и установка</h2>
+            <div class="swiper-container gallery-swiper" style="height: 20rem;">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide relative aspect-square h-[20rem] w-[20rem] rounded-2xl overflow-hidden flex items-end justify-center shadow-xl bg-white">
+                  <img src="assets/i1.jpg" alt="Компонент 1" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <div class="absolute inset-0 bg-black/10"></div>
+                  <div class="absolute bottom-4 right-4 z-10">
+                    <span class="text-base md:text-xl font-semibold text-white drop-shadow-lg bg-black/50 px-3 py-1.5 rounded-lg">Универсальный терминал</span>
+                  </div>
                 </div>
+                <div class="swiper-slide relative aspect-square h-[20rem] w-[20rem] rounded-2xl overflow-hidden flex items-end justify-center shadow-xl bg-white">
+                  <img src="assets/i2.jpg" alt="Компонент 2" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <div class="absolute inset-0 bg-black/10"></div>
+                  <div class="absolute bottom-4 right-4 z-10">
+                    <span class="text-base md:text-xl font-semibold text-white drop-shadow-lg bg-black/50 px-3 py-1.5 rounded-lg">Возможность управления джойстиком ISO</span>
+                  </div>
+                </div>
+                <div class="swiper-slide relative aspect-square h-[20rem] w-[20rem] rounded-2xl overflow-hidden flex items-end justify-center shadow-xl bg-white">
+                  <img src="assets/i3.jpg" alt="Компонент 3" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <div class="absolute inset-0 bg-black/10"></div>
+                  <div class="absolute bottom-4 right-4 z-10">
+                    <span class="text-base md:text-xl font-semibold text-white drop-shadow-lg bg-black/50 px-3 py-1.5 rounded-lg">Контроллер задач</span>
+                  </div>
+                </div>
+                <div class="swiper-slide relative aspect-square h-[20rem] w-[20rem] rounded-2xl overflow-hidden flex items-end justify-center shadow-xl bg-white">
+                  <img src="assets/i4.jpg" alt="Компонент 4" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <div class="absolute inset-0 bg-black/10"></div>
+                  <div class="absolute bottom-4 right-4 z-10">
+                    <span class="text-base md:text-xl font-semibold text-white drop-shadow-lg bg-black/50 px-3 py-1.5 rounded-lg">Подпись для i4</span>
+                  </div>
+                </div>
+                <div class="swiper-slide relative aspect-square h-[20rem] w-[20rem] rounded-2xl overflow-hidden flex items-end justify-center shadow-xl bg-white">
+                  <img src="assets/i5.jpg" alt="Компонент 5" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <div class="absolute inset-0 bg-black/10"></div>
+                  <div class="absolute bottom-4 right-4 z-10">
+                    <span class="text-base md:text-xl font-semibold text-white drop-shadow-lg bg-black/50 px-3 py-1.5 rounded-lg">Подпись для i5</span>
+                  </div>
+                </div>
+              </div>
             </div>
+            <div class="swiper-pagination flex justify-center mt-6"></div>
+          </div>
         </section>
 
         <!-- Pricing Section -->
@@ -198,27 +425,27 @@
                     <!-- NAVMOPO AT2 -->
                     <div class="relative group bg-white rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transition-transform duration-500 flex flex-col">
                         <div class="relative h-48 md:h-64 bg-gray-100 flex items-center justify-center">
-                            <img src="assets/NAVMOPO_AT2.png" alt="Автопилот NAVMOPO AT2 комплект" class="object-contain w-full h-full" />
+                            <img src="assets/NAVMOPO_AT2.png" alt="Автопилот NAVMOPO AT2 комплект" class="object-contain w-full h-full" loading="lazy" srcset="assets/NAVMOPO_AT2.png 1x, assets/NAVMOPO_AT2.png 2x" />
                             <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 md:p-4">
                                 <h3 class="text-xl md:text-2xl font-bold text-white">NAVMOPO AT2</h3>
                             </div>
                         </div>
                         <div class="flex flex-col flex-1 justify-between p-4 md:p-6">
                             <p class="text-gray-700 mb-4">NAVMOPO AT2 — это универсальная система автоматического вождения для сельхозтехники с точностью до 2.5 см, поддержкой RTK и бесплатного PPP, а также компенсацией рельефа. Простая установка, надежная работа даже на удалённых полях.</p>
-                            <button class="w-full md:w-auto bg-blue-600 text-white py-2 px-4 md:px-6 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition" onclick="openModelModal('AT2')">Подробнее</button>
+                            <button class="w-full md:w-auto bg-blue-600 text-white py-2 px-4 md:px-6 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition" onclick="openModal(0)">Подробнее</button>
                         </div>
                     </div>
                     <!-- NAVMOPO AT2 Plus -->
                     <div class="relative group bg-white rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transition-transform duration-500 flex flex-col">
                         <div class="relative h-48 md:h-64 bg-gray-100 flex items-center justify-center">
-                            <img src="assets/NAVMOPO_AT2_pro.jpeg" alt="Автопилот NAVMOPO AT2 Plus комплект" class="object-contain w-full h-full" />
+                            <img src="assets/NAVMOPO_AT2_pro.jpeg" alt="Автопилот NAVMOPO AT2 Plus комплект" class="object-contain w-full h-full" loading="lazy" srcset="assets/NAVMOPO_AT2_pro.jpeg 1x, assets/NAVMOPO_AT2_pro.jpeg 2x" />
                             <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 md:p-4">
                                 <h3 class="text-xl md:text-2xl font-bold text-white">NAVMOPO AT2 Plus</h3>
                             </div>
                         </div>
                         <div class="flex flex-col flex-1 justify-between p-4 md:p-6">
                             <p class="text-gray-700 mb-4">NAVMOPO AT2 Plus — флагманская система с увеличенным дисплеем, автоматическим разворотом, поддержкой ISOBUS и расширенными возможностями для сложных задач. Максимальная производительность и удобство для профессионалов.</p>
-                            <button class="w-full md:w-auto bg-blue-600 text-white py-2 px-4 md:px-6 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition" onclick="openModelModal('AT2Plus')">Подробнее</button>
+                            <button class="w-full md:w-auto bg-blue-600 text-white py-2 px-4 md:px-6 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition" onclick="openModal(1)">Подробнее</button>
                         </div>
                     </div>
                 </div>
@@ -248,43 +475,43 @@
                 <div class="diamonds-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 900px; margin: 0 auto; padding: 40px 0;">
                     <!-- Ромб 1 -->
                     <div class="diamond pulse-animation" onclick="openModal(0)">
-                        <img src="assets/modal_1.jpeg" alt="Кейс 1" class="diamond-image">
+                        <img src="assets/modal_1.jpeg" alt="Кейс 1" loading="lazy" srcset="assets/modal_1.jpeg 1x, assets/modal_1.jpeg 2x">
                         <div class="diamond-label"><i class="fas fa-moon mr-2"></i>Кейс: Ночная работа с AT2</div>
                     </div>
                     <!-- Ромб 2 -->
                     <div class="diamond" onclick="openModal(1)">
-                        <img src="assets/case-k700.png" alt="Кейс 2" class="diamond-image">
+                        <img src="assets/case-k700.png" alt="Кейс 2" loading="lazy" srcset="assets/case-k700.png 1x, assets/case-k700.png 2x">
                         <div class="diamond-label"><i class="fas fa-tractor mr-2"></i>Кейс: К-700 с AT2 Lite</div>
                     </div>
                     <!-- Ромб 3 -->
                     <div class="diamond" onclick="openModal(2)">
-                        <img src="assets/case2.jpg" alt="Кейс 3" class="diamond-image">
+                        <img src="assets/case2.jpg" alt="Кейс 3" loading="lazy" srcset="assets/case2.jpg 1x, assets/case2.jpg 2x">
                         <div class="diamond-label"><i class="fas fa-seedling mr-2"></i>Кейс: СПК «Заря»</div>
                     </div>
                     <!-- Ромб 4 -->
                     <div class="diamond" onclick="openModal(3)">
-                        <img src="assets/article2.jpg" alt="Статья 1" class="diamond-image">
+                        <img src="assets/article2.jpg" alt="Статья 1" loading="lazy" srcset="assets/article2.jpg 1x, assets/article2.jpg 2x">
                         <div class="diamond-label"><i class="fas fa-satellite mr-2"></i>Статья: RTK или PPP?</div>
                     </div>
                     <!-- Ромб 5 -->
                     <div class="diamond" onclick="openModal(4)">
-                        <img src="assets/case3.jpg" alt="Кейс 4" class="diamond-image">
+                        <img src="assets/case3.jpg" alt="Кейс 4" loading="lazy" srcset="assets/case3.jpg 1x, assets/case3.jpg 2x">
                         <div class="diamond-label"><i class="fas fa-user-tie mr-2"></i>Кейс: Фермер Иванов</div>
                     </div>
                     <!-- Ромб 6 -->
                     <div class="diamond" onclick="openModal(5)">
-                        <img src="assets/article3.jpg" alt="Статья 2" class="diamond-image">
+                        <img src="assets/article3.jpg" alt="Статья 2" loading="lazy" srcset="assets/article3.jpg 1x, assets/article3.jpg 2x">
                         <div class="diamond-label"><i class="fas fa-gas-pump mr-2"></i>Статья: Экономия топлива</div>
                     </div>
                 </div>
             </div>
             <!-- Модальное окно -->
-            <div id="modal" class="modal">
+            <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-text">
                 <div class="modal-content">
-                    <button class="modal-close" onclick="closeModal()">
+                    <button class="modal-close" onclick="closeModal()" aria-label="Закрыть модальное окно">
                         <i class="fas fa-times"></i>
                     </button>
-                    <img id="modal-image" class="modal-image" src="" alt="">
+                    <img id="modal-image" class="modal-image" src="" alt="" loading="lazy">
                     <h3 id="modal-title" class="modal-title"></h3>
                     <p id="modal-date" class="modal-date"></p>
                     <div id="modal-text" class="modal-text"></div>
@@ -311,10 +538,6 @@
             .diamond:nth-child(6) { animation-delay: -5s; }
             @keyframes diamondFloat {0%, 100% { transform: rotate(45deg) translateY(0px);box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);}50% { transform: rotate(45deg) translateY(-15px);box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);}}
             .diamond:hover {transform: rotate(45deg) translateY(-20px) scale(1.1);box-shadow:0 25px 50px rgba(0, 0, 0, 0.4),0 0 50px rgba(103, 126, 234, 0.5),inset 0 1px 0 rgba(255, 255, 255, 0.3);border-color: rgba(255, 255, 255, 0.4);}
-            .diamond-image {position: absolute;top: 50%;left: 50%;width: 140%;height: 140%;object-fit: cover;transform: translate(-50%, -50%) rotate(-45deg);transition: all 0.4s ease;filter: brightness(0.8) contrast(1.1);}
-            .diamond:hover .diamond-image {transform: translate(-50%, -50%) rotate(-45deg) scale(1.1);filter: brightness(1) contrast(1.2);}
-            .diamond-label {position: absolute;bottom: 15px;left: 15px;right: 15px;background: rgba(0, 0, 0, 0.8);backdrop-filter: blur(10px);color: white;padding: 8px 12px;border-radius: 8px;font-size: 0.85rem;font-weight: 600;text-align: center;transform: rotate(-45deg);transition: all 0.3s ease;border: 1px solid rgba(255, 255, 255, 0.2);}
-            .diamond:hover .diamond-label {background: rgba(103, 126, 234, 0.9);transform: rotate(-45deg) scale(1.05);box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);}
             .floating-shapes {position: absolute;top: 0;left: 0;width: 100%;height: 100%;pointer-events: none;overflow: hidden;}
             .shape {position: absolute;opacity: 0.1;animation: shapeFloat 15s linear infinite;}
             .shape:nth-child(1) {top: 10%;left: 10%;animation-delay: 0s;}
@@ -322,7 +545,7 @@
             .shape:nth-child(3) {bottom: 20%;left: 20%;animation-delay: -10s;}
             .shape:nth-child(4) {bottom: 10%;right: 10%;animation-delay: -7s;}
             @keyframes shapeFloat {0% { transform: translateY(0px) rotate(0deg); }25% { transform: translateY(-20px) rotate(90deg); }50% { transform: translateY(-40px) rotate(180deg); }75% { transform: translateY(-20px) rotate(270deg); }100% { transform: translateY(0px) rotate(360deg); }}
-            .modal {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);backdrop-filter: blur(10px);display: none;justify-content: center;align-items: center;z-index: 1000;animation: modalFadeIn 0.3s ease;}
+            .modal {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.8);backdrop-filter: blur(10px);display: none;justify-content: center;align-items: center;z-index: 9999;animation: modalFadeIn 0.3s ease;}
             .modal.show {display: flex;}
             @keyframes modalFadeIn {from { opacity: 0; }to { opacity: 1; }}
             .modal-content {background: white;border-radius: 20px;padding: 30px;max-width: 600px;width: 90%;max-height: 80vh;overflow-y: auto;position: relative;box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
@@ -389,24 +612,26 @@
                 document.getElementById('modal-text').innerHTML = data.content;
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
+                document.querySelector('header').classList.add('header-hide');
+                setTimeout(() => {
+                  const closeBtn = modal.querySelector('.modal-close');
+                  if (closeBtn) closeBtn.focus();
+                }, 100);
             }
             // Функция закрытия модального окна
             function closeModal() {
                 const modal = document.getElementById('modal');
                 modal.classList.remove('show');
                 document.body.style.overflow = 'auto';
+                document.querySelector('header').classList.remove('header-hide');
             }
             // Закрытие модального окна при клике вне его
             document.getElementById('modal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeModal();
-                }
+                if (e.target === this) closeModal();
             });
             // Закрытие модального окна по клавише Escape
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeModal();
-                }
+                if (e.key === 'Escape') closeModal();
             });
             // Параллакс эффект при скролле
             window.addEventListener('scroll', function() {
@@ -471,19 +696,19 @@
                     <input type="hidden" name="_replyto" value="mikhail.navicon@gmail.com">
                     <div>
                         <label class="block mb-2 font-semibold" for="name">Имя</label>
-                        <input class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white/50 focus:outline-none focus:ring-2 focus:ring-blue-600 transition" type="text" id="name" name="name" placeholder="Ваше имя" required>
+                        <input class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white/50 focus:outline-none focus:ring-2 focus:ring-blue-600 transition" type="text" id="name" name="name" placeholder="Ваше имя" required aria-required="true" autocomplete="name">
                     </div>
                     <div>
                         <label class="block mb-2 font-semibold" for="phone">Телефон</label>
-                        <input class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white/50 focus:outline-none focus:ring-2 focus:ring-blue-600 transition" type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+                        <input class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white/50 focus:outline-none focus:ring-2 focus:ring-blue-600 transition" type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required aria-required="true" autocomplete="tel">
                     </div>
                      <div>
                         <label class="block mb-2 font-semibold" for="tech-model">Модель вашей техники (трактор, комбайн)</label>
-                        <input class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white/50 focus:outline-none focus:ring-2 focus:ring-blue-600 transition" type="text" id="tech-model" name="tech-model" placeholder="Например, Кировец К-700">
+                        <input class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white/50 focus:outline-none focus:ring-2 focus:ring-blue-600 transition" type="text" id="tech-model" name="tech-model" placeholder="Например, Кировец К-700" autocomplete="organization">
                     </div>
                     <div>
                         <label class="block mb-2 font-semibold" for="message">Сообщение</label>
-                        <textarea class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white/50 focus:outline-none focus:ring-2 focus:ring-blue-600 transition" id="message" name="message" rows="4" placeholder="Ваш вопрос или комментарий"></textarea>
+                        <textarea class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white/50 focus:outline-none focus:ring-2 focus:ring-blue-600 transition" id="message" name="message" rows="4" placeholder="Ваш вопрос или комментарий" autocomplete="off"></textarea>
                     </div>
                     <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition shadow-lg hover:shadow-xl text-base md:text-lg">Получить консультацию и расчет</button>
                 </form>
@@ -491,248 +716,156 @@
         </section>
     </main>
 
+    <!-- Расширенный FAQ и отзывы -->
+    <section id="faq" class="py-12 md:py-20 bg-white/40 backdrop-blur rounded-2xl shadow-xl my-8 mx-2 md:mx-0">
+      <div class="container max-w-screen-md mx-auto px-4 md:px-6" data-aos="fade-up">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Часто задаваемые вопросы</h2>
+        <div class="space-y-4">
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="font-semibold cursor-pointer">Сколько стоит установка автопилота?</summary>
+            <div class="mt-2 text-gray-700">Стоимость зависит от модели и комплектации. Оставьте заявку — мы рассчитаем для вашей техники.</div>
+          </details>
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="font-semibold cursor-pointer">Какая гарантия на оборудование?</summary>
+            <div class="mt-2 text-gray-700">Гарантия на оборудование — 2 года. Сервис и поддержка в Тамбове и области.</div>
+          </details>
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="font-semibold cursor-pointer">Можно ли установить на старый трактор?</summary>
+            <div class="mt-2 text-gray-700">Да, система подходит для большинства тракторов, в том числе устаревших моделей.</div>
+          </details>
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="font-semibold cursor-pointer">Есть ли обучение персонала?</summary>
+            <div class="mt-2 text-gray-700">Да, наши специалисты проводят обучение операторов и предоставляют инструкции по эксплуатации.</div>
+          </details>
+          <details class="bg-white rounded-lg shadow p-4">
+            <summary class="font-semibold cursor-pointer">Как быстро осуществляется сервис?</summary>
+            <div class="mt-2 text-gray-700">В большинстве случаев выезд специалиста возможен в течение 1-2 дней после обращения.</div>
+          </details>
+        </div>
+        <h3 class="text-xl font-bold text-center mt-10 mb-4">Отзывы клиентов</h3>
+        <div class="space-y-4">
+          <blockquote class="bg-blue-50 rounded-lg p-4 shadow">
+            <p class="text-gray-800 font-semibold">«Система NAVMOPO AT2 помогла нам увеличить урожайность и снизить затраты на топливо. Очень довольны сервисом!»</p>
+            <footer class="mt-2 text-gray-600">— ООО "АгроПлюс", Тамбов</footer>
+          </blockquote>
+          <blockquote class="bg-blue-50 rounded-lg p-4 shadow">
+            <p class="text-gray-800 font-semibold">«Быстрая установка, понятный интерфейс, поддержка всегда на связи. Рекомендуем!»</p>
+            <footer class="mt-2 text-gray-600">— Фермер Иванов, Мичуринский район</footer>
+          </blockquote>
+          <blockquote class="bg-blue-50 rounded-lg p-4 shadow">
+            <p class="text-gray-800 font-semibold">«Установили автопилот на старый трактор — теперь работаем эффективнее и без ошибок!»</p>
+            <footer class="mt-2 text-gray-600">— СПК "Заря", Тамбовская область</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Микроразметка Review для отзывов -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      "reviewBody": "Система NAVMOPO AT2 помогла нам увеличить урожайность и снизить затраты на топливо. Очень довольны сервисом!",
+      "author": { "@type": "Organization", "name": "ООО АгроПлюс" },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+      "itemReviewed": { "@type": "Product", "name": "NAVMOPO AT2" }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      "reviewBody": "Быстрая установка, понятный интерфейс, поддержка всегда на связи. Рекомендуем!",
+      "author": { "@type": "Person", "name": "Фермер Иванов" },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+      "itemReviewed": { "@type": "Product", "name": "NAVMOPO AT2 Plus" }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      "reviewBody": "Установили автопилот на старый трактор — теперь работаем эффективнее и без ошибок!",
+      "author": { "@type": "Organization", "name": "СПК Заря" },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+      "itemReviewed": { "@type": "Product", "name": "NAVMOPO AT2 Lite" }
+    }
+    </script>
+
+    <script>
+    // --- Улучшенная анимация бургер-меню ---
+    const burger = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+    if (burger && menu) {
+      menu.classList.add('transition-all','duration-300','ease-in-out','opacity-0','scale-95','hidden');
+      burger.addEventListener('click', function() {
+        menu.classList.toggle('hidden');
+        setTimeout(() => {
+          menu.classList.toggle('opacity-0');
+          menu.classList.toggle('scale-95');
+        }, 10);
+      });
+    }
+    </script>
+
+    <style>
+    /* Стили для корректного позиционирования футера */
+    html, body {
+        min-height: 100vh;
+        margin: 0;
+    }
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+    main {
+        flex: 1 0 auto;
+    }
+    footer {
+        flex-shrink: 0;
+        width: 100%;
+        margin-top: auto;
+    }
+    </style>
+
     <!-- Footer -->
-    <footer id="footer" class="bg-gray-800/50 backdrop-blur text-white rounded-t-2xl mt-8">
-        <div class="container max-w-screen-xl mx-auto px-4 md:px-6 py-8 md:py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-                <div class="mb-8 md:mb-0 flex flex-col items-center md:items-start">
-                    <img src="assets/logo.svg" alt="Навикон Лого" class="h-12 w-auto mb-2">
-                    <p class="text-gray-400 mt-2">Комплексные решения для бизнеса на базе GPS/ГЛОНАСС-технологий. Тахография.</p>
+    <footer class="bg-white/90 backdrop-blur-md shadow-md mt-auto py-8">
+        <div class="container max-w-screen-xl mx-auto px-4 md:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Контакты -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Контакты</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="tel:+74752559400" class="hover:text-blue-600">+7 (4752) 55-94-00</a></li>
+                        <li><a href="mailto:navicon@bk.ru" class="hover:text-blue-600">navicon@bk.ru</a></li>
+                        <li>б-р Строителей, 3Г, Тамбов</li>
+                        <li>Пн-Пт: 8:00-17:00</li>
+                    </ul>
                 </div>
-                <div class="flex flex-col gap-2 text-gray-400">
-                    <h4 class="font-semibold mb-2 text-white">Телефоны:</h4>
-                     <a href="tel:+74752559400" class="hover:text-blue-400">+7 (4752) 55-94-00</a>
-                     <a href="tel:+79027333103" class="hover:text-blue-400">+7 (9027) 333-103</a>
-                     <a href="tel:+79004990102" class="hover:text-blue-400">+7 (900) 499-01-02</a>
+                <!-- Навигация -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Навигация</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#features" class="hover:text-blue-600">Преимущества</a></li>
+                        <li><a href="#gallery" class="hover:text-blue-600">Как это работает</a></li>
+                        <li><a href="#pricing" class="hover:text-blue-600">Модели</a></li>
+                        <li><a href="#cases-blog" class="hover:text-blue-600">Кейсы и статьи</a></li>
+                    </ul>
                 </div>
-                 <div class="flex flex-col gap-2 text-gray-400">
-                    <h4 class="font-semibold mb-2 text-white">Адрес:</h4>
-                    <p>392000, Россия, г.Тамбов, б-р Строителей, 3Г</p>
-                    <p>navicon@bk.ru</p>
+                <!-- Соцсети и документы -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Документы</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#" class="hover:text-blue-600">Политика конфиденциальности</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Пользовательское соглашение</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Сертификаты</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
-                <p>&copy; 2013-2025. ООО «Навикон»</p>
+            <div class="border-t border-gray-200 mt-8 pt-6 text-center text-gray-500 text-sm">
+                © 2024 ООО "Навикон". Все права защищены.
             </div>
         </div>
     </footer>
-
-    <!-- Modal -->
-    <div id="model-modal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50 p-4 hidden">
-        <div id="modal-content" class="bg-white rounded-xl shadow-2xl p-6 max-w-2xl w-full relative transform transition-all max-h-[90vh] overflow-y-auto" data-aos="zoom-in" data-aos-duration="300">
-            <!-- Close Button -->
-            <button id="close-modal-button" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors z-10">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-
-            <img id="modal-main-image" src="" alt="Фото модели" class="w-full h-64 object-cover rounded-lg mb-4">
-
-            <div class="swiper-container modal-swiper-container h-28 mb-4">
-                <div class="swiper-wrapper" id="modal-gallery-wrapper">
-                    <!-- Gallery images injected by JS -->
-                </div>
-            </div>
-            
-            <h3 id="modal-title" class="text-3xl font-bold mb-2"></h3>
-            <p id="modal-price" class="text-4xl font-extrabold mb-4 text-blue-700"></p>
-            <p id="modal-description" class="text-gray-500 mb-6"></p>
-            
-            <h4 class="font-semibold text-lg mb-2">Ключевые характеристики:</h4>
-            <ul id="modal-features" class="space-y-3 text-gray-600 mb-6">
-                <!-- Features will be injected by JS -->
-            </ul>
-
-            <div class="reviews-marquee-container relative h-12 overflow-hidden bg-gray-100 rounded-lg mb-8 p-3">
-                <div class="reviews-marquee absolute whitespace-nowrap">
-                    <!-- Reviews injected by JS -->
-                </div>
-            </div>
-            
-            <button id="modal-ask-question-button" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition">Задать вопрос по этой модели</button>
-        </div>
-    </div>
-
-    <!-- Parallax, Swiper, AOS и кастомные скрипты -->
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-parallax-js@5.6.2/dist/simpleParallax.min.js"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            once: true,
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Parallax
-            if (window.simpleParallax) {
-                new simpleParallax(document.querySelectorAll('.simple-parallax'), {
-                    scale: 1.2,
-                    delay: 0.6,
-                    transition: 'cubic-bezier(0,0,0,1)'
-                });
-            }
-            // Swiper for AT2
-            if (window.Swiper) {
-                new Swiper('.at2-swiper', {
-                    loop: true,
-                    pagination: { el: '.at2-swiper .swiper-pagination', clickable: true },
-                    effect: 'fade',
-                    fadeEffect: { crossFade: true },
-                    autoplay: { delay: 4000, disableOnInteraction: false },
-                });
-                // Swiper for AT2 Plus
-                new Swiper('.at2plus-swiper', {
-                    loop: true,
-                    pagination: { el: '.at2plus-swiper .swiper-pagination', clickable: true },
-                    effect: 'fade',
-                    fadeEffect: { crossFade: true },
-                    autoplay: { delay: 4000, disableOnInteraction: false },
-                });
-                // Swiper for Gallery Section
-                new Swiper('.gallery-swiper', {
-                    loop: true,
-                    centeredSlides: true,
-                    slidesPerView: 1,
-                    spaceBetween: 32,
-                    breakpoints: {
-                        768: { slidesPerView: 2, spaceBetween: 40 },
-                        1280: { slidesPerView: 2, spaceBetween: 56 },
-                    },
-                    autoplay: { delay: 3500, disableOnInteraction: false },
-                    pagination: { el: '.gallery-swiper .swiper-pagination', clickable: true },
-                    navigation: {
-                        nextEl: '.gallery-swiper .swiper-button-next',
-                        prevEl: '.gallery-swiper .swiper-button-prev',
-                    },
-                    speed: 1200,
-                    effect: 'slide',
-                });
-            }
-        });
-
-        // --- ДАННЫЕ ДЛЯ МОДАЛОК ---
-        const modelData = {
-            AT2: {
-                title: 'NAVMOPO AT2',
-                price: 'от 350 000 ₽',
-                mainImage: './assets/modal_1.jpeg',
-                gallery: [
-                    './assets/modal_1.1.jpeg',
-                    './assets/modal_1.2.jpg',
-                    './assets/modal_1.3.jpeg',
-                    './assets/modal_1.4.jpg',
-                ],
-                description: 'Универсальная система автоматического вождения для сельхозтехники с точностью до 2.5 см, поддержкой RTK и бесплатного PPP, а также компенсацией рельефа. Разработан для плавного управления трактором при автоматических разворотах на конце рядов, обеспечивает оптимальную маневренность и непрерывность ваших повседневных сельскохозяйственных работ.',
-                features: [
-                    'Точность до 2.5 см (RTK)',
-                    'Работа по бесплатному PPP',
-                    'IMU-сенсор для компенсации рельефа',
-                    'Совместимость с большинством тракторов',
-                    'Быстрая установка и калибровка',
-                ],
-                reviews: [
-                    'Очень доволен системой! — Иван, Тамбов',
-                    'Экономия топлива и времени. — Сергей, Мичуринск',
-                    'Работает даже на старых тракторах! — Николай, Моршанск',
-                ]
-            },
-            AT2Plus: {
-                title: 'NAVMOPO AT2 Plus',
-                price: 'от 480 000 ₽',
-                mainImage: './assets/modal_2.jpeg',
-                gallery: [
-                    './assets/modal_2.1.jpeg',
-                    './assets/modal_2.2.jpeg',
-                    './assets/modal_2.3.jpeg',
-                    './assets/modal_2.4.jpeg',
-                ],
-                description: 'Флагманская система с увеличенным дисплеем, автоматическим разворотом, поддержкой ISOBUS и расширенными возможностями для сложных задач.',
-                features: [
-                    '12.1" сенсорный дисплей',
-                    'Smart и Basic U-Turn',
-                    'ISOBUS: управление навесным оборудованием',
-                    'OTA-обновления и онлайн поддержка',
-                    'Максимальная производительность',
-                ],
-                reviews: [
-                    'Потрясающий дисплей! — Алексей, Рассказово',
-                    'ISOBUS — это удобно. — Дмитрий, Тамбов',
-                    'Автоматический разворот экономит время. — Павел, Котовск',
-                ]
-            }
-        };
-
-        // --- ОТКРЫТИЕ МОДАЛКИ ---
-        window.openModelModal = function(modelKey) {
-            const data = modelData[modelKey];
-            if (!data) return;
-            document.getElementById('modal-title').textContent = data.title;
-            document.getElementById('modal-price').textContent = data.price;
-            document.getElementById('modal-main-image').src = data.mainImage;
-            document.getElementById('modal-description').textContent = data.description;
-            // Характеристики
-            const featuresList = document.getElementById('modal-features');
-            featuresList.innerHTML = '';
-            data.features.forEach(f => {
-                const li = document.createElement('li');
-                li.textContent = f;
-                featuresList.appendChild(li);
-            });
-            // Галерея
-            const galleryWrapper = document.getElementById('modal-gallery-wrapper');
-            galleryWrapper.innerHTML = '';
-            data.gallery.forEach(img => {
-                const slide = document.createElement('div');
-                slide.className = 'swiper-slide flex items-center justify-center';
-                slide.innerHTML = `<img src="${img}" alt="Фото" class="h-24 object-cover rounded-lg">`;
-                galleryWrapper.appendChild(slide);
-            });
-            // Отзывы
-            const reviewsMarquee = document.querySelector('.reviews-marquee');
-            reviewsMarquee.innerHTML = data.reviews.map(r => `<span class='mx-8'>${r}</span>`).join('');
-            // Показать модалку
-            document.getElementById('model-modal').classList.remove('hidden');
-            // Инициализация свайпера для галереи
-            if (window.Swiper) {
-                setTimeout(() => {
-                    new Swiper('.modal-swiper-container', {
-                        slidesPerView: 3,
-                        spaceBetween: 10,
-                        loop: true,
-                    });
-                }, 100);
-            }
-        };
-        // --- ЗАКРЫТИЕ МОДАЛКИ ---
-        document.getElementById('close-modal-button').onclick = function() {
-            document.getElementById('model-modal').classList.add('hidden');
-        };
-        document.getElementById('model-modal').addEventListener('click', function(e) {
-            if (e.target === this) this.classList.add('hidden');
-        });
-        // --- ПЛАВНЫЙ СКРОЛЛ С УЧЁТОМ ХЕДЕРА ---
-        function scrollToSection(id) {
-            const header = document.querySelector('header');
-            const section = document.getElementById(id);
-            if (!section) return;
-            const y = section.getBoundingClientRect().top + window.pageYOffset - (header.offsetHeight + 10);
-            window.scrollTo({ top: y, behavior: 'smooth' });
-        }
-        // --- КНОПКИ "Рассчитать стоимость" ---
-        document.querySelectorAll('a[href="#pricing"], a[href="#contact"], .cta-button').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href && href.startsWith('#')) {
-                    e.preventDefault();
-                    scrollToSection(href.replace('#', ''));
-                }
-            });
-        });
-        // --- КНОПКА "Задать вопрос по этой модели" ---
-        document.getElementById('modal-ask-question-button').onclick = function() {
-            document.getElementById('model-modal').classList.add('hidden');
-            setTimeout(() => scrollToSection('contact'), 200);
-        };
-    </script>
 </body>
 </html> 
